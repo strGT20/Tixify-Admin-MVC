@@ -1,0 +1,352 @@
+/* Global Styles */
+body {
+    font-family: Montserrat;
+    margin: 0;
+    padding: 0;
+    background-color: #F5F6FA;
+    color: #f4f4f4;
+
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
+h1 {
+    text-align: center;
+    color: #031273;
+}
+
+h2 {
+    text-align: center;
+    color: #031273;
+}
+
+h3 {
+    text-align: center;
+    color: #031273;
+}
+
+h4, h5 {
+    text-align: center;
+    color: #031273;
+}
+
+
+footer{
+    background-color: #031273;
+    text-align: center;
+}
+
+.form-container{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand{
+    color: #ffffff;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* card */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    width: 1000px;
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* teks dalam card */
+.card h3, .card h5, .card p {
+    margin: 10px 0;
+    color: #031273;
+}
+
+/* container navbar */
+#navbar {
+    background-color: #031273 !important;
+    padding: 20px;
+}
+
+/* link navbar */
+#navbar .nav-link {
+    padding: 10px 15px;
+}
+
+.navbar-expand {
+    background-color: #031273; /* Warna biru yang serasi */
+}
+
+/* Navbar Link Styling */
+.navbar-nav {
+    margin-left: 10px;
+    text-align: center;
+}
+
+.nav-item .nav-link {
+    color: #ffffff;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.navbar-brand img {
+    margin-right: 10px; /* Atur jarak kanan logo */
+    padding: 0; /* Hapus padding jika ada */
+}
+
+.navbar-nav .nav-item {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+
+.card .btn {
+    background-color: #ffffff;
+    color: #031273;
+    border: 2px solid #031273;
+    padding: 8px 40px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.card .btn_bus {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    width: 200px;
+    background-color: #ffffff;
+    stroke: #031273;
+    stroke-width: 5px;
+    text-align: center;
+    color: #031273;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.card .btn:hover {
+    background-color: #031273;
+    color: #ffffff;
+}
+
+.card .btn_bus:hover {
+    background-color: #031273;
+    color: #ffffff;
+}
+
+
+
+/* Form Styles */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #000;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form input[type="submit"] {
+    background-color: #031273;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+form input[type="submit"]:hover {
+    background-color: #ffffff;
+    color: #031273;
+}
+
+
+/* Button Styles */
+.btn-auth {
+    background-color: #ffffff;
+    color: #031273;
+    border: 2px solid #031273;
+    padding: 10px 150px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-auth:hover {
+    background-color: #031273;
+    color: #ffffff;
+}
+
+.button-container {
+    text-align: right; /* Mengatur konten dalam div ke sebelah kanan */
+}
+
+.btn-bus {
+    background-color: #ffffff;
+    color: #031273;
+    border: 2px solid #031273;
+    padding: 10px 100px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-bus:hover {
+    background-color: #031273;
+    color: #ffffff;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 20px;
+    background-color: #6c757d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+#login_btn{
+    background-color: #EFBF04;
+    color: #ffffff;
+    border: #ffffff;
+    border-radius: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#register {
+    max-width: 400px;
+    background-color: #ffffff;
+    border: #6c757d;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#btn-register {
+    background-color: #F5F6FA;
+    stroke-width: 5px;
+    stroke: #031273;
+    color: #031273;
+}
+
+#btn-register:hover {
+    background-color: #031273;
+    stroke: #031273;
+    color: #ffffff;
+}
+
+#login {
+    max-width: 400px;
+    background-color: #ffffff;
+    border: #6c757d;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#btn-login {
+    background-color: #F5F6FA;
+    stroke-width: 5px;
+    stroke: #031273;
+    color: #031273;
+}
+
+#btn-login:hover {
+    background-color: #031273;
+    stroke: #031273;
+    color: #ffffff;
+}
+
+.flexbox {
+    justify-content: center;
+}
+
+.add-container {
+    display:inline ;
+    justify-content: center;
+
+}
+
+#btn-add {
+    background-color: #031273;
+    color: #ffffff;
+    border: 2px solid #031273;
+    margin-left: 590px;
+    padding: 10px 300px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    justify-content: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+#btn-add:hover {
+    background-color: #ffffff;
+    color: #031273;
+}
