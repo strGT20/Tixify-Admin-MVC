@@ -8,10 +8,10 @@
     <title>Login</title>
 </head>
 
-<form action="?c=Auth&m=register_process" method="POST">
+<form action="?c=Auth&m=registerProcess" method="POST">
     <label>Nama <input type="text" name="name" required></label><br>
     <label>Email  <input type="email" name="email" required></label><br>
     <label>Password <input type="password" name="password" required></label><br>
     <button type="submit">Daftar</button>
 </form>
-<p>Sudah punya akun? <a href="?c=Auth&m=login_form">Login di sini</a></p>
+<p>Sudah punya akun? <a href="?c=Auth&m=loginProcess">Login di sini</a></p>
