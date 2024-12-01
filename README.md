@@ -1,3 +1,7 @@
-﻿# Tixify-Fleet-Control
+﻿# TIXIFY-FLEET-CONTROL
 
 TUGAS AKHIR PENGEMBANGAN APLIKASI WEB
+
+Nama \t: 
+NIM \t:
+Program Studi :
