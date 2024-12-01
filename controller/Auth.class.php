@@ -1,72 +1,80 @@
 <?php
 class Auth extends Controller
 {
-    // Menampilkan form login
-    public function login_form()
+    public function index()
     {
         $this->loadView('login');
     }
 
-    public function register_form()
+    // Menampilkan form login
+//    public function login_form()
+//    {
+//        $this->loadView('login');
+//    }
+
+    public function register()
     {
         $this->loadView('register');
     }
 
     // Proses login
-    public function login_process()
+    public function loginProcess()
     {
-        $userModel = $this->loadModel('UserModel');
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+        $email = addslashes($_POST['email']);
+        $password = addslashes($_POST['password']);
+        $admin = addslashes($_POST['is_admin']);
+        $authModel = $this->loadModel('AuthModel');
+        $users = $authModel->getUsers($email, $password);
 
-        $user = $userModel->getUserByEmail($email);
+        if ($users->num_rows != 0) {
+            $row = $users->fetch_assoc();
+            if ($users && password_verify($password, $users['password'])) {
+                session_start();
+                $_SESSION['user_id'] = $users['id'];
+                $_SESSION['name'] = $users['name'];
+                $_SESSION['is_admin'] = $users['is_admin'];
+//            header('Location: ?c=Auth&m=index');
+                if ($users['is_admin']) {
+                    header("Location: ?c=Bus&m=BusModel");
+                } else {
+                    header("Location: ?c=Auth&m=index");
+                }
+                exit();
 
-        if ($user && password_verify($password, $user['password'])) {
-            session_start();
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['name'] = $user['name'];
-            $_SESSION['id_admin'] = $user['is_admin'];
-            header('Location: ?c=Auth&m=dashboard');
-            if ($user['is_admin']) {
-                header("Location: ?c=Dashboard&m=index");
             } else {
-                header("Location: ?c=Home&m=index");
+                return ['error' => 'Email atau kata sandi salah!'];
             }
-            exit();
-
-        } else {
-            return ['error' => 'Email atau kata sandi salah!'];
         }
     }
 
     // Proses register
-    public function register_process()
+    public function registerProcess()
     {
-        $userModel = $this->loadModel('UserModel');
+        $userModel = $this->loadModel('AuthModel');
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
         $userModel->registerUser($name, $email, $password);
-        header('Location: ?c=Auth&m=login_form');
+        header('Location: ?c=Auth&m=loginProcess');
     }
 
     // Dashboard setelah login
-    public function dashboard()
-    {
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ?c=Auth&m=login_form');
-            exit;
-        }
-        $this->loadView('dashboard', ['name' => $_SESSION['name']]);
-    }
+//    public function dashboard()
+//    {
+//        session_start();
+//        if (!isset($_SESSION['user_id'])) {
+//            header('Location: ?c=Auth&m=loginProcess');
+//            exit;
+//        }
+//        $this->loadView('list_bus', ['name' => $_SESSION['name']]);
+//    }
 
     // Logout
     public function logout()
     {
         session_start();
         session_destroy();
-        header('Location: ?c=Auth&m=login_form');
+        header('Location: ?c=Auth&m=loginProcess');
     }
 }

@@ -1,11 +1,6 @@
 <?php
-class UserModel extends Model
+class AuthModel extends Model
 {
-    // Ambil data pengguna berdasarkan email
-    public function __construct($connect) {
-        $this->connect = $connect;
-    }
-
     // Ambil user berdasarkan email
     public function getUserByEmail($email) {
         $stmt = $this->connect->prepare("SELECT * FROM Users WHERE email = ?");
@@ -19,6 +14,6 @@ class UserModel extends Model
     {
         $stmt = $this->mysqli->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $name, $email, $password);
-        return $stmt->execute();
+        $stmt->execute();
     }
 }

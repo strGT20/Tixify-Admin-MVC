@@ -1,19 +1,28 @@
 <?php
 class Bus extends Controller
 {
-    public function list()
+    public function index()
     {
         $busModel = $this->loadModel('BusModel');
         $buses = $busModel->getAllBuses();
-        $this->loadView('bus_list', ['buses' => $buses]);
+        $this->loadView('list_bus', ['buses' => $buses]);
+    }
+    
+    public function getAllBuses()
+    {
+        $busModel = $this->loadModel('BusModel');
+        $buses = $busModel->getAllBuses();
+        while ($bus = $buses->fetch_assoc()) {
+            echo $bus['name']; // Tampilkan data bus
+        }
     }
 
-    public function add_form()
+    public function insert_form()
     {
         $this->loadView('bus_form');
     }
 
-    public function add_process()
+    public function insert_process()
     {
         $busModel = $this->loadModel('BusModel');
         $name = $_POST['name'];

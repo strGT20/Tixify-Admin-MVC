@@ -8,10 +8,10 @@
         <title>Login</title>
 </head>
 
-<form action="?c=Auth&m=login_process" method="POST">
+<form action="?c=Auth&m=loginProcess" method="POST">
     <?php if (!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
     <label>Email: <input type="email" name="email" required></label><br>
     <label>Password: <input type="password" name="password" required></label><br>
     <button type="submit">Login</button>
 </form>
-<p>Belum punya akun? <a href="?c=Auth&m=register_form">Daftar di sini</a></p>
+<p>Belum punya akun? <a href="?c=Auth&m=registerProcess">Daftar di sini</a></p>
