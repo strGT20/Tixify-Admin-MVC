@@ -2,6 +2,6 @@
 
 TUGAS AKHIR PENGEMBANGAN APLIKASI WEB
 
-Nama \t: 
-NIM \t:
-Program Studi :
+Pandu Satria Sapta Loka \
+235150700111011 \
+Teknologi Informasi \
