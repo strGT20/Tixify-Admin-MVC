@@ -3,17 +3,19 @@ class AuthModel extends Model
 {
     // Ambil user berdasarkan email
     public function getUserByEmail($email) {
-        $stmt = $this->connect->prepare("SELECT * FROM Users WHERE email = ?");
+        $stmt = $this->mysqli->prepare("SELECT * FROM Users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        return $result = $stmt->get_result();
     }
 
     // Simpan data pengguna baru
-    public function registerUser($name, $email, $password)
+    public function registerUser($nama, $email, $password)
     {
-        $stmt = $this->mysqli->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+        $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+        $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("sss", $name, $email, $password);
         $stmt->execute();
+        $stmt->close();
     }
 }
