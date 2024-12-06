@@ -14,9 +14,10 @@ class Auth extends Controller
     // Proses login
     public function loginProcess()
     {
+
         // Validasi input
-        $email = addslashes($_POST['email']);
-        $password = addslashes($_POST['password']);
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
         $authModel = $this->loadModel('AuthModel');
         $user = $authModel->getUserByEmail($email); // Mengambil data user sebagai array
@@ -26,18 +27,8 @@ class Auth extends Controller
             $row = $user->fetch_assoc();
             // Validasi password
             if (password_verify($password, $row['password'])) {
-                session_start();
-                $_SESSION['user_id'] = $row['id'];
-                $_SESSION['name'] = $row['name'];
-
-                // Redirect berdasarkan is_admin
-                if ($row['is_admin']) {
-                    $_SESSION['is_admin'] = $row['is_admin'];
-                    header("Location: ?c=Bus&m=index");
-                } else {
-                    header("Location: ?c=Auth&m=index");
-                }
-                exit();
+                $_SESSION['id_user'] = $row['id_user'];
+                header("Location: ?c=Bus&m=index");
             } else {
                 die("Password salah.");
             }
@@ -68,6 +59,6 @@ class Auth extends Controller
     {
         session_start();
         session_destroy();
-        header('Location: ?c=Auth&m=loginProcess');
+        header('Location: ?c=Auth');
     }
 }

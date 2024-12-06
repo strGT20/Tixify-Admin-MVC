@@ -1,12 +1,16 @@
 <?php
-error_reporting(~E_NOTICE);
+session_start();
 
 $connect = mysqli_connect("localhost", "root", "", "starluxetransport");
 if($connect->connect_error){
     die("Database connect failed: " . $connect->connect_error);
 }
 
-$controller = $_GET['c'] ?? 'Auth'; // Default ke Auth
+if(isset($_SESSION['id_user'])){
+    $controller = $_GET['c'] ?? 'Bus';
+} else {
+    $controller = $_GET['c'] ?? 'Auth';
+}
 $method = $_GET['m'] ?? 'index';    // Default method index
 
 // Load base controller
@@ -23,3 +27,6 @@ if (file_exists($controllerFile)) {
 } else {
     echo "Error: Controller $controller tidak ditemukan.";
 }
+
+include "view/header.php";
+include "view/footer.php";

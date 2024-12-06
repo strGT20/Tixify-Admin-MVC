@@ -1,3 +1,8 @@
+<?php
+if(isset($_SESSION['id_user']))
+    header("Location: ?c=Bus&m=index")
+?>
+
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +13,7 @@
         <title>Login</title>
 </head>
 
+<br><br><br><br><br>
 <form action="?c=Auth&m=loginProcess" method="POST">
     <?php if (!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
     <label>Email: <input type="email" name="email" required></label><br>

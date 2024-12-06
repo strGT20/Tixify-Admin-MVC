@@ -4,16 +4,16 @@ class Bus extends Controller
     public function index()
     {
         $busModel = $this->loadModel('BusModel');
-        $buses = $busModel->getAllBuses();
-        $this->loadView('list_bus', ['buses' => $buses]);
+        $bus = $busModel->getAllBuses();
+        $this->loadView('list_bus', ['bus' => $bus]);
     }
     
     public function getAllBuses()
     {
         $busModel = $this->loadModel('BusModel');
-        $buses = $busModel->getAllBuses();
-        while ($bus = $buses->fetch_assoc()) {
-            echo $bus['name']; // Tampilkan data bus
+        $bus = $busModel->getAllBuses();
+        while ($row = $bus->fetch_assoc()) {
+            echo $row['no_reg_bus']; // Tampilkan data bus
         }
     }
 
@@ -22,7 +22,7 @@ class Bus extends Controller
         // Periksa apakah file diunggah
         if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
             // Tentukan direktori tujuan
-            $target_dir = "/images/" . basename($_FILES['image']['name']);
+            $target_dir = "images/" . basename($_FILES['image']['name']);
 
             if($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
                 echo "<script>alert('File upload error: " . $_FILES['image']['error'] . "');</script>";
@@ -41,71 +41,89 @@ class Bus extends Controller
     }
 
     // Method untuk memanggil view insert_bus
-    public function insert_form()
+    public function insertFormReguler()
     {
-        $tipe_bus = $_GET['tipe'] ?? null;
-        $this->loadView('insert_bus', ['tipe_bus' => $tipe_bus]);
+        $this->loadView('insert_bus_reguler');
     }
 
+    public function insertFormRental() 
+    {
+        $this->loadView('insert_bus_rental');
+    }
 
     //Method untuk menjalankan logika insert
-    public function insert()
+    public function insertBusReguler()
     {
-        if (isset($_POST['save'])) { // Proses hanya jika tombol Simpan ditekan
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tipe_bus = $_POST['tipe_bus'];
             $no_reg_bus = $_POST['no_reg_bus'];
             $kelas_layanan = $_POST['kelas_layanan'];
             $kapasitas = $_POST['kapasitas'];
-            $image = $_FILES['image'];
+            $rute = $_POST['rute'];
+            $harga_tiket = $_POST['harga_tiket'];
 
-            // Lakukan validasi input (opsional)
-
-            // Proses field khusus sesuai tipe bus
-            if ($tipe_bus === 'reguler') {
-                $rute = $_POST['rute'];
-                $harga_tiket = $_POST['harga_tiket'];
-
-                // Simpan data bus reguler ke database
-                $busModel = $this->loadModel('BusModel');
-                $busModel->insertReguler($no_reg_bus, $kelas_layanan, $kapasitas, $image, $rute, $harga_tiket);
-            } elseif ($tipe_bus === 'rental') {
-                $harga_sewa = $_POST['harga_sewa'];
-
-                // Simpan data bus rental ke database
-                $busModel = $this->loadModel('BusModel');
-                $busModel->insertRental($no_reg_bus, $kelas_layanan, $kapasitas, $image, $harga_sewa);
+            // Proses upload file
+            $foto_armada = $this->imagesUploadHandler();
+            if (empty($foto_armada === null)) {
+                $foto_armada = 'images/jetbus_mhd5.jpg';
             }
 
-            // Redirect setelah insert
-            header("Location: ?c=Bus&success=Bus berhasil ditambahkan");
-            exit;
-        } else {
-            // Jika form tidak lengkap, redirect dengan pesan error
-            header("Location: ?c=Bus&error=Form tidak lengkap");
-            exit;
+            // Simpan data ke tabel bus
+            $busModel = $this->loadModel('BusModel');
+            $id_bus = $busModel->insertBus($no_reg_bus, $tipe_bus, $kelas_layanan, $kapasitas, $foto_armada);
+
+            if ($id_bus) {
+                // Simpan data ke tabel bus_reguler
+                $result = $busModel->insertBusReguler($id_bus, $rute, $harga_tiket);
+                if ($result) {
+                    header("Location: ?c=Bus&m=index");
+                    exit();
+                }
+            }
+
+            die("Gagal menyimpan data bus reguler.");
         }
     }
 
 
+    public function insertBusRental()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $tipe_bus = $_POST['tipe_bus'];
+            $no_reg_bus = $_POST['no_reg_bus'];
+            $kelas_layanan = $_POST['kelas_layanan'];
+            $kapasitas = $_POST['kapasitas'];
+            $harga_sewa = $_POST['harga_sewa'];
 
-    public function update_form()
+            // Proses upload file
+            $foto_armada = $this->imagesUploadHandler();
+            if (empty($foto_armada === null)) {
+                $foto_armada = 'images/jetbus_mhd5.jpg';
+            }
+
+            // Simpan data ke tabel bus
+            $busModel = $this->loadModel('BusModel');
+            $id_bus = $busModel->insertBus($no_reg_bus, $tipe_bus, $kelas_layanan, $kapasitas, $foto_armada);
+
+            if ($id_bus) {
+                // Simpan data ke tabel bus_rental
+                $result = $busModel->insertBusRental($id_bus, $harga_sewa);
+                if ($result) {
+                    header("Location: ?c=Bus&m=index");
+                    exit();
+                }
+            }
+
+            die("Gagal menyimpan data bus rental.");
+        }
+    }
+
+    public function updateForm()
     {
         $this->loadView('update_bus');
     }
 
-    public function tipeBusReloadOnChange($id)
-    {
-        $busModel = $this->loadModel('BusModel');
-        $bus = $busModel->getBusById($id);
-
-        // Cek apakah tipe bus diubah
-        $tipe_bus = $_POST['tipe_bus'] ?? $bus['tipe_bus'];
-
-        // Pass data ke view
-        $this->view('update_bus', ['bus' => $bus, 'tipe_bus' => $tipe_bus]);
-    }
-
-    public function update($id)
+    public function update($id, $bus)
     {
         $busModel = $this->model('BusModel');
         $this->loadView('edit_bus', ['bus' => $bus]);
@@ -131,27 +149,6 @@ class Bus extends Controller
             $busModel->updateBus($id, $data);
             header('Location: ?c=Bus');
             exit;
-        }
-    }
-
-    public function update_process()
-    {
-        $id_bus = addslashes($_POST['id_bus']);
-        $no_reg_bus = addslashes($_POST['no_reg_bus']);
-        $kelas_layanan = addslashes($_POST['kelas_layanan']);
-        $tipe_bus = addslashes($_POST['tipe_bus']);
-        $kapasitas = addslashes($_POST['kapasitas']);
-        $rute = addslashes($_POST['rute']);
-        $harga_tiket = addslashes($_POST['harga_tiket']);
-        $harga_sewa = addslashes($_POST['harga_sewa']);
-
-        $busModel = $this->loadModel('BusModel');
-        $bus = $busModel->getBusById($id_bus);
-
-        if ($busModel->updateBus($id_bus, $no_reg_bus, $tipe_bus, $kapasitas)) {
-            header("Location: ?c=Bus&m=list");
-        } else {
-            echo "Failed to update bus. Please try again.";
         }
     }
 

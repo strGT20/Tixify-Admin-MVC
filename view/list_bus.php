@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(!isset($_SESSION['id_user']))
+    header("Location: ?c=Auth");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,18 +15,21 @@
     <title>Daftar Bus</title>
 </head>
 <body>
+<br><br><br><br>
 <h1>STARLUXE FLEET CONTROL</h1>
 
 <div class="flexbox">
     <div class="add-container" id="add">
         <div class="add-button">
-            <a href="?c=Bus&m=insert_form" id="btn-add">Tambah Bus Baru</a>
+            <a href="?c=Bus&m=insertFormReguler" id="btn-add">Tambah Bus Reguler</a>
+            <br><br>
+            <a href="?c=Bus&m=insertFormRental" id="btn-add">Tambah Bus Rental</a>
         </div>
     </div>
 
     <div class="container">
-        <?php if (!empty($data['buses'])): ?>
-            <?php foreach ($data['buses'] as $bus): ?>
+        <?php if (!empty($data['bus'])): ?>
+            <?php foreach ($data['bus'] as $bus): ?>
                 <div class="card mb-3">
                     <div class="col-md-4">
                         <img src="<?= htmlspecialchars($bus['foto_armada']); ?>" class="img-fluid rounded-start" alt="Bus Image">
@@ -28,9 +37,8 @@
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($bus['no_reg_bus']); ?></h5>
-                                <p class="card-text">Kelas: <?= htmlspecialchars($bus['kelas_layanan']); ?></p>
-                                <p class="card-text">Tipe : <?= htmlspecialchars($bus['tipe_bus']); ?></p>
-                                <a href="?c=Bus&m=update_form&id_bus="<?= htmlspecialchars($bus['id_bus']) ?> class="btn btn-primary">Detail</a>
+                                <p class="card-text">Kelas : <?= htmlspecialchars($bus['kelas_layanan']); ?></p>
+                                <a href="?c=Bus&m=updateForm&id_bus="<?= htmlspecialchars($bus['id_bus']) ?> class="btn btn-primary">Detail</a>
                                 <a href="?c=Bus&m=delete&id_bus=<?= htmlspecialchars($bus['id_bus']); ?>"
                                    class="btn btn-danger"
                                    onclick="return confirm('Apakah Anda yakin ingin menghapus bus ini?');">Hapus</a>

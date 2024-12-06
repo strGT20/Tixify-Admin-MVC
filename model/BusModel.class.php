@@ -11,7 +11,7 @@ class BusModel extends Model
 
     public function insertBus($no_reg_bus, $tipe_bus, $kelas_layanan, $kapasitas, $foto_armada)
     {
-        $sql = "INSERT INTO bus (no_reg_bus, tipe_bus, kelas_layanan, kapasitas, foto_armada) 
+        $sql = "INSERT INTO Bus (no_reg_bus, tipe_bus, kelas_layanan, kapasitas, foto_armada) 
             VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("sssis", $no_reg_bus, $tipe_bus, $kelas_layanan, $kapasitas, $foto_armada);
@@ -27,22 +27,22 @@ class BusModel extends Model
 
     public function insertBusReguler($id_bus, $rute, $harga_tiket)
     {
-        $query = "INSERT INTO bus_reguler (id_bus, rute, harga_tiket) 
-              VALUES (?, ?, ?)";
-        $stmt = $this->mysqli->prepare($query);
-        $stmt->bind_param("isd", $id_bus, $rute, $harga_tiket); // id_bus adalah integer
-        $stmt->execute();
-        $stmt->close();
+        $sql = "INSERT INTO bus_reguler (id_bus, rute, harga_tiket) 
+            VALUES (?, ?, ?)";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param("isd", $id_bus, $rute, $harga_tiket);
+        return $stmt->execute();
     }
-
 
     public function insertBusRental($id_bus, $harga_sewa)
     {
-        $query = "INSERT INTO bus_rental (id_bus, harga_sewa) VALUES (?, ?)";
-        $stmt = $this->mysqli->prepare($query);
+        $sql = "INSERT INTO bus_rental (id_bus, harga_sewa) 
+            VALUES (?, ?)";
+        $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("id", $id_bus, $harga_sewa);
-        $stmt->execute();
+        return $stmt->execute();
     }
+
 
     public function getBusById($id_bus)
     {
@@ -71,7 +71,6 @@ class BusModel extends Model
         $stmtReguler->execute();
 
         // Tambahkan query untuk menghapus data terkait di tabel lain jika ada
-        // Contoh: Hapus data di tabel bus_rental jika ada hubungan dengan id_bus
         $sqlRental = "DELETE FROM bus_rental WHERE id_bus = ?";
         $stmtRental = $this->mysqli->prepare($sqlRental);
         $stmtRental->bind_param("i", $id_bus);
